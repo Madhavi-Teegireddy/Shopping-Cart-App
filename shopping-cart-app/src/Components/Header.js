@@ -1,24 +1,28 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Navbar from 'react-bootstrap/Navbar'
 import Container from 'react-bootstrap/Container'
 import Table from 'react-bootstrap/Table'
 
 import Nav from 'react-bootstrap/Nav';
-import menu from "@mui/material/Menu";
+import { DELETE } from '../Redux/action';
 
 
 
 import Badge, { BadgeProps } from '@mui/material/Badge';
 import { NavLink } from 'react-router-dom';
 import { Menu, MenuItem } from '@mui/material';
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 
 
 const Header = () => {
 
+  const [price, setPrice] = useState(0);
+
   const getData = useSelector((state) => state.cartReducer.carts);
   console.log(getData);
+
+  const dispatch = useDispatch();
 
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -29,6 +33,22 @@ const Header = () => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const delt = (id) => {
+      dispatch(DELETE(id))
+    }
+
+    const total = () => {
+      let price = 0;
+      getData.map((ele,k) => {
+        price = ele.price + price
+      });
+      setPrice(price);
+    }
+
+    useEffect(() => {
+      total()
+    }, [total])
   return (
     <>
     <Navbar bg="dark" variant="dark" style={{height:"60px"}}>
@@ -80,11 +100,12 @@ const Header = () => {
                                 <b><p>{ele.rname}</p>
                                 <p>Price : ₹ {ele.price}</p>
                                 <p>Quantity : {ele.qnty}</p></b>
-                                <p>
-                                  <i style={{color:"red", fontSize:20, cursor:"pointer"}} className='fas fa-trash smalltrash'></i>
+                                <p style={{color:"red", fontSize:20, cursor:"pointer"}} onClick={()=>delt(ele.id)}>
+                                  <i  className='fas fa-trash smalltrash'
+                                  ></i>
                                 </p>
                               </td>
-                              <td className='mt-5' style={{color:"red", fontSize:20, cursor:"pointer"}}>
+                              <td className='mt-5' style={{color:"red", fontSize:20, cursor:"pointer"}} onClick={()=>delt(ele.id)}>
                               <i className='fas fa-trash largetrash'></i>
                               </td>
                             </tr>
@@ -93,7 +114,7 @@ const Header = () => {
                           )
                         })
                       }
-                      <p className='text-center'>Total : ₹ 300</p>
+                      <p className='text-center'>Total : ₹ {price}</p>
                     </tbody>
                   </Table>
                 </div> :
