@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import Navbar from 'react-bootstrap/Navbar'
 import Container from 'react-bootstrap/Container'
+import Table from 'react-bootstrap/Table'
+
 import Nav from 'react-bootstrap/Nav';
 import menu from "@mui/material/Menu";
 
@@ -9,10 +11,15 @@ import menu from "@mui/material/Menu";
 import Badge, { BadgeProps } from '@mui/material/Badge';
 import { NavLink } from 'react-router-dom';
 import { Menu, MenuItem } from '@mui/material';
+import {useSelector} from "react-redux";
 
 
 
 const Header = () => {
+
+  const getData = useSelector((state) => state.cartReducer.carts);
+  console.log(getData);
+
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -30,7 +37,7 @@ const Header = () => {
           <Nav className="me-auto">
             <NavLink to="/" className="text-decoration-none text-light">Home</NavLink>
           </Nav>
-          <Badge badgeContent={4} color="primary"
+          <Badge badgeContent={getData.length} color="primary"
           id="basic-button"
           aria-controls={open ? 'basic-menu' : undefined}
           aria-haspopup="true"
@@ -46,14 +53,29 @@ const Header = () => {
             onClose={handleClose}
             MenuListProps={{
             'aria-labelledby': 'basic-button',}}>
-                
-                <div className='card_details d-flex justify-content-center align-items-center' style={{width:"24rem", padding:10, position:"relative"}}>
-                    <i className='fa fa-close smallclose' style={{position:"absolute",top:2,right:20,fontSize:23,cursor:"pointer"}}
-                    onClick={handleClose}></i>
-                    <p style={{fontSize:27}}>Your cart is empty</p>
-                    <img className='emptycart_img' style={{width:"5rem", padding:10}} src="/images/cart.gif"/>
 
-                </div>
+              {
+                getData.length ? 
+                <div className='card_details' style={{width:"24rem",padding:10}}>
+                  <Table>
+                    <thead>
+                      <tr>
+                        <th>Photo</th>
+                        <th>Name restatystyut</th>
+                      </tr>
+                    </thead>
+                  </Table>
+                </div> :
+                <div className='card_details d-flex justify-content-center align-items-center' style={{width:"24rem", padding:10, position:"relative"}}>
+                <i className='fa fa-close smallclose' style={{position:"absolute",top:2,right:20,fontSize:23,cursor:"pointer"}}
+                onClick={handleClose}></i>
+                <p style={{fontSize:27}}>Your cart is empty</p>
+                <img className='emptycart_img' style={{width:"5rem", padding:10}} src="/images/cart.gif"/>
+
+            </div>
+              }
+                
+                
 
             </Menu>
       </Navbar>
