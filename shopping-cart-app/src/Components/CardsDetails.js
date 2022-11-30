@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Table from "react-bootstrap/Table";
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { DELETE } from '../Redux/action';
+import { ADD, DELETE, REMOVE } from '../Redux/action';
 
 
 
@@ -33,6 +33,14 @@ const CardsDetails = () => {
     history("/");
   }
 
+  const remove = (item) => {
+    dispatch(REMOVE(item))
+  }
+
+  const send = (e) => {
+    dispatch(ADD(e));
+  }
+
   useEffect(() => {
     compare();
   }, [id])
@@ -59,12 +67,12 @@ const CardsDetails = () => {
                   <p><b>Restaurant </b>: {ele.rname}</p>
                   <p><b>Price </b>: ₹{ele.price}</p>
                   <p><b>Dishes </b>: {ele.address}</p>
-                  <p><b>Total </b>: ₹{ele.price} </p>
+                  <p><b>Total </b>: ₹{ele.price * ele.qnty} </p>
                   <div className='mt-5 d-flex justify-content-between align-items-center'
                   style={{width:100, cursor:"pointer", background:"#ddd", color:"#111"}}>
-                  <span style={{fontSize:24}}>-</span>
+                  <span style={{fontSize:24}} onClick={ele.qnty <= 1 ? () => dlt(ele.id) : () => remove(ele)}>-</span>
                   <span style={{fontSize:22}}>{ele.qnty}</span>
-                  <span style={{fontSize:24}}>+</span>
+                  <span style={{fontSize:24}} onClick={() => send(ele)}>+</span>
                   </div>
                 </td>
 
