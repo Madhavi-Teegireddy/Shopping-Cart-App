@@ -1,8 +1,12 @@
 import React from 'react';
 import Table from "react-bootstrap/Table";
+import { useParams } from 'react-router-dom';
 
 
 const CardsDetails = () => {
+
+  const {id} = useParams();
+  console.log(id)
   return (
     <>
     <div className='container mt-2'>

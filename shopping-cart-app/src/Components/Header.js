@@ -61,9 +61,40 @@ const Header = () => {
                     <thead>
                       <tr>
                         <th>Photo</th>
-                        <th>Name restatystyut</th>
+                        <th>Restaurant Name</th>
                       </tr>
                     </thead>
+                    <tbody>
+                      {
+                        getData.map((ele) => {
+                          return (
+                            <>
+                            <tr>
+                              <td>
+                                <NavLink to={`/cart/${ele.id}`}>
+                                <img src={ele.imgdata} alt=""
+                                style={{width:"5rem", heigth:"5rem"}}/>
+                                </NavLink>
+                              </td>
+                              <td>
+                                <b><p>{ele.rname}</p>
+                                <p>Price : ₹ {ele.price}</p>
+                                <p>Quantity : {ele.qnty}</p></b>
+                                <p>
+                                  <i style={{color:"red", fontSize:20, cursor:"pointer"}} className='fas fa-trash smalltrash'></i>
+                                </p>
+                              </td>
+                              <td className='mt-5' style={{color:"red", fontSize:20, cursor:"pointer"}}>
+                              <i className='fas fa-trash largetrash'></i>
+                              </td>
+                            </tr>
+                            </>
+
+                          )
+                        })
+                      }
+                      <p className='text-center'>Total : ₹ 300</p>
+                    </tbody>
                   </Table>
                 </div> :
                 <div className='card_details d-flex justify-content-center align-items-center' style={{width:"24rem", padding:10, position:"relative"}}>
